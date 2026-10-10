@@ -1,0 +1,6 @@
+{
+  "name": "Lotcards - Vaulted Pokemon Mystery Packs",
+  "description": "Courtyard-inspired physical asset vaulted Pokemon mystery packs with 100 graded cards per pack and 20x top chase cards.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
