@@ -254,75 +254,92 @@ export default function App() {
       <main className="flex-1">
         {currentTab === 'packs' && (
           <div className="w-full">
-            {/* Hero Section */}
-            <section className="relative px-4 sm:px-6 py-12 sm:py-16 max-w-7xl mx-auto overflow-hidden">
-              {/* Subtle ambient backdrops */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] bg-gradient-to-r from-amber-500/10 via-purple-500/10 to-blue-500/10 blur-[100px] pointer-events-none rounded-full" />
+            {/* Bold Hero Section */}
+            <section className="relative px-4 sm:px-6 pt-10 pb-12 sm:pt-16 sm:pb-16 max-w-7xl mx-auto overflow-hidden">
+              {/* Vibrant ambient backdrops */}
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[400px] bg-gradient-to-r from-amber-500/15 via-purple-500/10 to-emerald-500/15 blur-[120px] pointer-events-none rounded-full" />
 
-              <div className="relative z-10 text-center max-w-3xl mx-auto">
-                <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-slate-900 border border-slate-800 text-xs font-mono text-slate-300 mb-5 shadow-sm">
-                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-                  <span>100% Authentic Raw Cards</span>
+              <div className="relative z-10 text-center max-w-4xl mx-auto">
+                {/* Status Pill */}
+                <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-900/90 border border-slate-700/80 text-xs font-mono text-slate-200 mb-6 shadow-md backdrop-blur-sm">
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                  <span className="font-bold text-white">100% Authentic Raw Cards</span>
                   <span className="text-slate-600">·</span>
-                  <a
-                    href="https://www.pokemon.com/uk/pokemon-tcg/pokemon-cards"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-400 hover:text-blue-300 underline underline-offset-2 flex items-center gap-1"
-                  >
-                    <span>Pokemon.com UK Scans</span>
-                  </a>
+                  <span className="text-amber-400 font-bold">20x Top Chase Guaranteed</span>
                   <span className="text-slate-600">·</span>
-                  <span className="text-emerald-400 font-semibold">Instant Sell: 90%</span>
+                  <span className="text-emerald-400 font-bold">90% Instant Sell-Back</span>
                 </div>
 
-                <h1 className="text-3xl sm:text-5xl font-black text-white tracking-tight text-balance leading-[1.15]">
-                  Vaulted Raw Pokémon Mystery Packs with{' '}
-                  <span className="bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-500 bg-clip-text text-transparent">
-                    20x Top Chase
+                {/* Bold Headline */}
+                <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black text-white tracking-tight text-balance leading-[1.08]">
+                  Unbox Raw Pokémon Packs with{' '}
+                  <span className="bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-500 bg-clip-text text-transparent drop-shadow-sm">
+                    20x Top Chases
                   </span>
                 </h1>
 
-                <p className="mt-4 text-sm sm:text-base text-slate-400 max-w-2xl mx-auto leading-relaxed">
-                  Open 4 mystery pack tiers with <strong className="text-slate-200">100 raw Pokémon cards</strong> loaded in every pack, featuring authentic card scans matched to the <a href="https://www.pokemon.com/uk/pokemon-tcg/pokemon-cards" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:underline">Pokémon.com UK TCG Database</a>. Top chases guaranteed at 20x pack entry: instant sell back for <strong className="text-emerald-400">90% cash value</strong>, or request physical delivery.
+                {/* Fresh Subhead */}
+                <p className="mt-5 text-sm sm:text-base text-slate-300/90 max-w-2xl mx-auto leading-relaxed">
+                  Four curated mystery tiers with <strong className="text-white font-bold">100 real raw Pokémon cards</strong> loaded per pack, matched to official Pokémon UK card database scans. Instant buyback for <strong className="text-emerald-400 font-bold">90% cash value</strong>, or request insured vault delivery.
                 </p>
 
-                {/* Quick Trust Badges */}
-                <div className="mt-6 flex flex-wrap items-center justify-center gap-6 text-xs font-mono text-slate-400">
-                  <div className="flex items-center gap-1.5 text-emerald-400">
-                    <Check className="w-4 h-4" />
-                    <span>Free UK Shipping &gt; £25</span>
+                {/* 4 Crisp Feature Badges */}
+                <div className="mt-8 grid grid-cols-2 md:grid-cols-4 gap-3 text-left">
+                  <div className="p-3.5 rounded-2xl bg-slate-900/70 border border-slate-800/80 backdrop-blur-sm shadow-md hover:border-slate-700 transition-colors">
+                    <div className="flex items-center gap-2 text-amber-400 text-xs font-bold font-mono">
+                      <Sparkles className="w-3.5 h-3.5" />
+                      <span>100 Cards / Pack</span>
+                    </div>
+                    <p className="text-[11px] text-slate-400 mt-1 leading-tight font-medium">
+                      Every pool is fully auditable with transparent odds.
+                    </p>
                   </div>
-                  <div className="flex items-center gap-1.5 text-emerald-400">
-                    <Check className="w-4 h-4" />
-                    <span>Free Overseas Shipping &gt; £100</span>
+
+                  <div className="p-3.5 rounded-2xl bg-slate-900/70 border border-slate-800/80 backdrop-blur-sm shadow-md hover:border-slate-700 transition-colors">
+                    <div className="flex items-center gap-2 text-amber-400 text-xs font-bold font-mono">
+                      <ShieldCheck className="w-3.5 h-3.5" />
+                      <span>20x Top Chase</span>
+                    </div>
+                    <p className="text-[11px] text-slate-400 mt-1 leading-tight font-medium">
+                      Iconic grails guaranteed at 20x pack entry (1 in 100).
+                    </p>
                   </div>
-                  <div className="flex items-center gap-1.5">
-                    <Check className="w-4 h-4 text-emerald-400" />
-                    <span>Instant Sell @ 90% Value</span>
+
+                  <div className="p-3.5 rounded-2xl bg-slate-900/70 border border-slate-800/80 backdrop-blur-sm shadow-md hover:border-slate-700 transition-colors">
+                    <div className="flex items-center gap-2 text-emerald-400 text-xs font-bold font-mono">
+                      <Check className="w-3.5 h-3.5" />
+                      <span>90% Instant Sell</span>
+                    </div>
+                    <p className="text-[11px] text-slate-400 mt-1 leading-tight font-medium">
+                      Cash out any card in seconds with zero delay.
+                    </p>
                   </div>
-                  <a
-                    href="https://www.pokemon.com/uk/pokemon-tcg/pokemon-cards"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-1.5 text-blue-400 hover:text-blue-300 transition-colors"
-                  >
-                    <Check className="w-4 h-4 text-emerald-400" />
-                    <span>Pokémon.com UK Database Scans ↗</span>
-                  </a>
+
+                  <div className="p-3.5 rounded-2xl bg-slate-900/70 border border-slate-800/80 backdrop-blur-sm shadow-md hover:border-slate-700 transition-colors">
+                    <div className="flex items-center gap-2 text-blue-400 text-xs font-bold font-mono">
+                      <Check className="w-3.5 h-3.5" />
+                      <span>Insured Vault</span>
+                    </div>
+                    <p className="text-[11px] text-slate-400 mt-1 leading-tight font-medium">
+                      Physical tracked delivery across UK & Worldwide.
+                    </p>
+                  </div>
                 </div>
               </div>
             </section>
 
             {/* 4 Mystery Pack Grid Section */}
             <section className="px-4 sm:px-6 pb-20 max-w-7xl mx-auto">
-              <div className="flex items-center justify-between mb-8">
+              <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
                 <div>
-                  <h2 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
+                  <div className="inline-flex items-center gap-2 text-xs font-mono font-bold text-amber-400 uppercase tracking-wider mb-1">
+                    <span>Curated Pack Tiers</span>
+                  </div>
+                  <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
                     Select Your Mystery Pack
                   </h2>
                   <p className="text-xs text-slate-400 mt-1">
-                    Choose from 4 tiers: £5, £10, £25, or £50. Every pack has 100 loaded cards.
+                    Choose from 4 tiers: £5, £10, £25, or £50. Real tactile foil ripping with 3D tilt.
                   </p>
                 </div>
 
@@ -331,7 +348,7 @@ export default function App() {
                     sound.playClick();
                     setIsHowItWorksOpen(true);
                   }}
-                  className="hidden sm:flex items-center gap-1 text-xs font-mono text-amber-400 hover:text-amber-300 transition-colors"
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-800 hover:border-amber-500/40 text-xs font-mono text-amber-400 hover:text-white transition-all shadow-sm w-fit"
                 >
                   <span>How packs work</span>
                   <ArrowRight className="w-3.5 h-3.5" />
@@ -352,12 +369,14 @@ export default function App() {
               </div>
 
               {/* Chase Highlights Showcase Section */}
-              <div className="mt-16 p-6 sm:p-8 rounded-3xl bg-[#0D0F17] border border-slate-800/80 shadow-2xl">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+              <div className="mt-16 p-6 sm:p-8 rounded-3xl bg-[#0D0F19] border border-slate-800/90 shadow-2xl relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-80 h-80 bg-amber-500/5 blur-3xl pointer-events-none rounded-full" />
+
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 relative z-10">
                   <div>
                     <div className="flex items-center gap-2">
                       <Sparkles className="w-4 h-4 text-amber-400" />
-                      <h3 className="text-lg sm:text-xl font-bold text-white tracking-tight">
+                      <h3 className="text-xl sm:text-2xl font-black text-white tracking-tight">
                         Featured 20x Top Chase Slabs
                       </h3>
                     </div>
@@ -366,13 +385,13 @@ export default function App() {
                     </p>
                   </div>
 
-                  <div className="text-xs font-mono text-slate-400">
+                  <div className="text-xs font-mono text-slate-400 px-3 py-1 rounded-full bg-slate-900/80 border border-slate-800">
                     Inspected & vaulted under Brink's custody
                   </div>
                 </div>
 
                 {/* 4 Top Chases Displayed side by side */}
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 justify-items-center">
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 justify-items-center relative z-10">
                   {PACK_TIERS.map((tier) => {
                     const topChaseCard = tier.cards[0];
                     return (
@@ -382,17 +401,17 @@ export default function App() {
                           sound.playClick();
                           setInspectingPack(tier);
                         }}
-                        className="cursor-pointer group flex flex-col items-center"
+                        className="cursor-pointer group flex flex-col items-center p-3 rounded-2xl bg-slate-950/40 border border-slate-800/80 hover:border-amber-500/50 hover:bg-slate-900/60 transition-all duration-300 w-full"
                       >
                         <CardSlab card={topChaseCard} size="sm" interactive />
-                        <div className="mt-3 text-center w-full">
-                          <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 font-bold border border-amber-500/30">
+                        <div className="mt-3.5 text-center w-full">
+                          <span className="text-[10px] font-mono px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 font-bold border border-amber-500/30">
                             {tier.cost === 5 ? '£5 Pack Chase (20x)' : tier.cost === 10 ? '£10 Pack Chase (20x)' : tier.cost === 25 ? '£25 Pack Chase (20x)' : '£50 Pack Chase (20x)'}
                           </span>
-                          <div className="text-xs font-bold text-white truncate max-w-[180px] mt-1.5">
+                          <div className="text-xs font-bold text-white truncate max-w-[180px] mt-2 group-hover:text-amber-300 transition-colors">
                             {topChaseCard.name}
                           </div>
-                          <div className="text-xs font-bold font-mono text-amber-400 mt-0.5">
+                          <div className="text-xs font-black font-mono text-amber-400 mt-0.5">
                             £{tier.topChaseValue.toLocaleString()} · {topChaseCard.grade}
                           </div>
                         </div>

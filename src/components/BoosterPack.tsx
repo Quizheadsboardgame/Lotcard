@@ -1,7 +1,80 @@
 import React, { useState, useRef } from 'react';
 import { PackTier } from '../types';
-import { Sparkles, Eye, RotateCcw, ExternalLink, ShieldCheck } from 'lucide-react';
+import { Sparkles, Eye, RotateCcw, ShieldCheck } from 'lucide-react';
 import { sound } from '../utils/audio';
+
+export interface PackThemeConfig {
+  seriesName: string;
+  expansionTitle: string;
+  mascotTitle: string;
+  accentBorder: string;
+  foilGlow: string;
+  crimpColor: string;
+  frontBackground: string;
+  backBackground: string;
+  badgeBg: string;
+  themeColor: string;
+  artUrl: string;
+}
+
+export const PACK_THEMES: Record<string, PackThemeConfig> = {
+  'pack-5': {
+    seriesName: 'STARTER VAULT · £5',
+    expansionTitle: 'SHINING EMBER MYSTERY',
+    mascotTitle: 'CHARIZARD VMAX',
+    accentBorder: 'border-red-500/70',
+    foilGlow: 'shadow-[0_0_30px_rgba(239,68,68,0.35)]',
+    crimpColor: 'from-amber-900/60 via-amber-200/50 to-amber-900/60',
+    frontBackground: 'linear-gradient(150deg, #ea580c 0%, #dc2626 35%, #b91c1c 70%, #991b1b 100%)',
+    backBackground: 'linear-gradient(150deg, #7f1d1d 0%, #991b1b 50%, #450a0a 100%)',
+    badgeBg: 'bg-red-500/30 text-amber-200 border-red-400/50',
+    themeColor: '#dc2626',
+    artUrl: '/mystery-pack-art.png',
+  },
+  'pack-10': {
+    seriesName: 'ELITE VAULT · £10',
+    expansionTitle: 'CELESTIAL DRAGON MYSTERY',
+    mascotTitle: 'RAYQUAZA VMAX',
+    accentBorder: 'border-emerald-400/70',
+    foilGlow: 'shadow-[0_0_30px_rgba(16,185,129,0.35)]',
+    crimpColor: 'from-emerald-900/60 via-emerald-200/50 to-emerald-900/60',
+    frontBackground: 'linear-gradient(150deg, #10b981 0%, #059669 35%, #047857 70%, #064e3b 100%)',
+    backBackground: 'linear-gradient(150deg, #064e3b 0%, #047857 50%, #022c22 100%)',
+    badgeBg: 'bg-emerald-500/30 text-emerald-200 border-emerald-400/50',
+    themeColor: '#059669',
+    artUrl: '/mystery-pack-art.png',
+  },
+  'pack-25': {
+    seriesName: 'MASTER VAULT · £25',
+    expansionTitle: 'GOLDEN CROWN MYSTERY',
+    mascotTitle: 'MARIO PIKACHU',
+    accentBorder: 'border-blue-400/70',
+    foilGlow: 'shadow-[0_0_30px_rgba(37,99,235,0.35)]',
+    crimpColor: 'from-blue-900/60 via-cyan-200/50 to-blue-900/60',
+    frontBackground: 'linear-gradient(150deg, #3b82f6 0%, #2563eb 35%, #1d4ed8 70%, #1e3a8a 100%)',
+    backBackground: 'linear-gradient(150deg, #1e3a8a 0%, #1d4ed8 50%, #0f172a 100%)',
+    badgeBg: 'bg-blue-500/30 text-blue-200 border-blue-400/50',
+    themeColor: '#2563eb',
+    artUrl: '/mystery-pack-art.png',
+  },
+  'pack-50': {
+    seriesName: 'GRAIL VAULT · £50',
+    expansionTitle: 'OBSIDIAN MOON MYSTERY',
+    mascotTitle: 'MOONBREON VMAX',
+    accentBorder: 'border-purple-400/70',
+    foilGlow: 'shadow-[0_0_35px_rgba(168,85,247,0.4)]',
+    crimpColor: 'from-purple-900/60 via-fuchsia-200/50 to-purple-900/60',
+    frontBackground: 'linear-gradient(150deg, #a855f7 0%, #9333ea 35%, #7e22ce 70%, #581c87 100%)',
+    backBackground: 'linear-gradient(150deg, #581c87 0%, #6b21a8 50%, #2e1065 100%)',
+    badgeBg: 'bg-purple-500/30 text-purple-200 border-purple-400/50',
+    themeColor: '#9333ea',
+    artUrl: '/mystery-pack-art.png',
+  },
+};
+
+export function getPackTheme(packId: string): PackThemeConfig {
+  return PACK_THEMES[packId] || PACK_THEMES['pack-5'];
+}
 
 interface BoosterPackProps {
   pack: PackTier;
@@ -28,9 +101,8 @@ export const BoosterPack: React.FC<BoosterPackProps> = ({
   const [glarePos, setGlarePos] = useState({ x: 50, y: 50, opacity: 0 });
   const cardRef = useRef<HTMLDivElement>(null);
 
-  // Top chase card reference for pack mascot
   const topChaseCard = pack.cards.find((c) => c.isTopChase) || pack.cards[0];
-  const mascotImg = topChaseCard.imageUrl || topChaseCard.artworkUrl;
+  const theme = getPackTheme(pack.id);
 
   // Sizing definitions matching real Pokemon booster pack proportions (1 : 1.95)
   const sizeStyles = {
@@ -38,104 +110,27 @@ export const BoosterPack: React.FC<BoosterPackProps> = ({
       container: 'w-[145px] h-[280px]',
       topCrimpH: 'h-6',
       bottomCrimpH: 'h-5',
-      logoScale: 'scale-75 origin-top',
-      mascotH: 'h-24 w-20',
-      badgeText: 'text-[8px]',
-      titleText: 'text-xs',
+      badgeText: 'text-[7px]',
+      titleText: 'text-[9px]',
       subText: 'text-[7px]',
-      teethCount: 16,
     },
     md: {
       container: 'w-[220px] h-[430px]',
       topCrimpH: 'h-8',
       bottomCrimpH: 'h-7',
-      logoScale: 'scale-100',
-      mascotH: 'h-40 w-32',
-      badgeText: 'text-[10px]',
-      titleText: 'text-sm',
-      subText: 'text-[9px]',
-      teethCount: 22,
+      badgeText: 'text-[9px]',
+      titleText: 'text-xs',
+      subText: 'text-[8px]',
     },
     hero: {
       container: 'w-[260px] sm:w-[280px] h-[505px] sm:h-[540px]',
       topCrimpH: 'h-10',
       bottomCrimpH: 'h-8',
-      logoScale: 'scale-110',
-      mascotH: 'h-52 w-40 sm:h-56 sm:w-44',
-      badgeText: 'text-xs',
-      titleText: 'text-base',
-      subText: 'text-[10px]',
-      teethCount: 26,
+      badgeText: 'text-[10px]',
+      titleText: 'text-sm',
+      subText: 'text-[9px]',
     },
   }[size];
-
-  // Distinctive Mystery Pack themes per tier
-  const packThemes: Record<
-    string,
-    {
-      seriesName: string;
-      expansionTitle: string;
-      mascotTitle: string;
-      elementalAura: string;
-      accentBorder: string;
-      foilGlow: string;
-      crimpColor: string;
-      foilSheen: string;
-      mysteryVibe: string;
-      glowGradient: string;
-    }
-  > = {
-    'pack-5': {
-      seriesName: 'SWORD & SHIELD SERIES',
-      expansionTitle: 'SHINING EMBER VAULT',
-      mascotTitle: 'CHARIZARD VMAX',
-      elementalAura: 'from-amber-600/40 via-orange-600/30 to-red-950/60',
-      accentBorder: 'border-amber-400/50',
-      foilGlow: 'shadow-amber-500/30',
-      crimpColor: 'from-amber-900/40 via-amber-200/40 to-amber-900/40',
-      foilSheen: 'from-amber-500/20 via-orange-400/10 to-transparent',
-      mysteryVibe: 'Fiery Ember Mystery Shroud',
-      glowGradient: 'radial-gradient(circle at 50% 45%, rgba(245, 158, 11, 0.45) 0%, rgba(180, 83, 9, 0.2) 50%, transparent 75%)',
-    },
-    'pack-10': {
-      seriesName: 'SCARLET & VIOLET SERIES',
-      expansionTitle: 'CELESTIAL DRAGON VAULT',
-      mascotTitle: 'RAYQUAZA VMAX',
-      elementalAura: 'from-emerald-600/40 via-teal-600/30 to-slate-950/60',
-      accentBorder: 'border-emerald-400/50',
-      foilGlow: 'shadow-emerald-500/30',
-      crimpColor: 'from-emerald-900/40 via-emerald-200/40 to-emerald-900/40',
-      foilSheen: 'from-emerald-500/20 via-teal-400/10 to-transparent',
-      mysteryVibe: 'Celestial Cyclone Shroud',
-      glowGradient: 'radial-gradient(circle at 50% 45%, rgba(16, 185, 129, 0.45) 0%, rgba(13, 148, 136, 0.2) 50%, transparent 75%)',
-    },
-    'pack-25': {
-      seriesName: 'MASTER COLLECTION SERIES',
-      expansionTitle: 'GOLDEN CROWN VAULT',
-      mascotTitle: 'MARIO PIKACHU',
-      elementalAura: 'from-blue-600/40 via-cyan-600/30 to-indigo-950/60',
-      accentBorder: 'border-cyan-400/50',
-      foilGlow: 'shadow-cyan-500/30',
-      crimpColor: 'from-cyan-900/40 via-cyan-200/40 to-cyan-900/40',
-      foilSheen: 'from-cyan-500/20 via-blue-400/10 to-transparent',
-      mysteryVibe: 'Electric 24K Royal Starlight',
-      glowGradient: 'radial-gradient(circle at 50% 45%, rgba(6, 182, 212, 0.45) 0%, rgba(37, 99, 235, 0.2) 50%, transparent 75%)',
-    },
-    'pack-50': {
-      seriesName: 'ULTRA GRAIL ARCHIVE',
-      expansionTitle: 'OBSIDIAN MOON VAULT',
-      mascotTitle: 'MOONBREON VMAX',
-      elementalAura: 'from-purple-600/40 via-fuchsia-600/30 to-stone-950/60',
-      accentBorder: 'border-purple-400/50',
-      foilGlow: 'shadow-purple-500/40',
-      crimpColor: 'from-purple-900/40 via-fuchsia-200/40 to-purple-900/40',
-      foilSheen: 'from-purple-500/20 via-fuchsia-400/10 to-transparent',
-      mysteryVibe: 'Midnight Cosmic Nebula Shroud',
-      glowGradient: 'radial-gradient(circle at 50% 45%, rgba(168, 85, 247, 0.5) 0%, rgba(217, 70, 239, 0.25) 50%, transparent 75%)',
-    },
-  };
-
-  const theme = packThemes[pack.id] || packThemes['pack-5'];
 
   // Handle 3D Mouse / Touch perspective tilt & rainbow glare
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -177,7 +172,9 @@ export const BoosterPack: React.FC<BoosterPackProps> = ({
           perspective: '1200px',
         }}
         onClick={() => {
-          if (onInspect) {
+          if (onRip) {
+            onRip();
+          } else if (onInspect) {
             sound.playClick();
             onInspect();
           }
@@ -191,42 +188,11 @@ export const BoosterPack: React.FC<BoosterPackProps> = ({
           }}
         >
           {/* ============================================================== */}
-          {/* FRONT FACE: REAL POKEMON FOIL BOOSTER PACK WITH MYSTERY AURA   */}
+          {/* FRONT FACE: AUTHENTIC POKEMON MYSTERY FOIL BOOSTER PACK        */}
           {/* ============================================================== */}
           <div
             className={`absolute inset-0 w-full h-full rounded-2xl flex flex-col justify-between overflow-hidden shadow-2xl [backface-visibility:hidden] border ${theme.accentBorder} ${theme.foilGlow}`}
-            style={{
-              background: `linear-gradient(135deg, #0b0d14 0%, #151824 50%, #0d0f17 100%)`,
-            }}
           >
-            {/* Soft 3D Cylindrical Pillow Shading (Simulating cards bulging inside real foil wrapper) */}
-            <div
-              className="absolute inset-0 pointer-events-none z-20"
-              style={{
-                background:
-                  'linear-gradient(90deg, rgba(0,0,0,0.65) 0%, rgba(255,255,255,0.12) 14%, rgba(255,255,255,0.02) 28%, transparent 50%, rgba(255,255,255,0.03) 72%, rgba(0,0,0,0.3) 88%, rgba(0,0,0,0.7) 100%)',
-              }}
-            />
-
-            {/* Dynamic Prismatic Rainbow Mylar Foil Glare */}
-            <div
-              className="absolute inset-0 pointer-events-none z-25 transition-opacity duration-200"
-              style={{
-                opacity: glarePos.opacity,
-                background: `radial-gradient(circle 240px at ${glarePos.x}% ${glarePos.y}%, rgba(255,255,255,0.45) 0%, rgba(255, 230, 0, 0.25) 25%, rgba(0, 240, 255, 0.25) 50%, rgba(255, 0, 180, 0.15) 75%, transparent 100%)`,
-                mixBlendMode: 'color-dodge',
-              }}
-            />
-
-            {/* Micro Diagonal Foil Texture Lines */}
-            <div
-              className="absolute inset-0 pointer-events-none z-10 opacity-30"
-              style={{
-                backgroundImage:
-                  'repeating-linear-gradient(45deg, transparent, transparent 3px, rgba(255,255,255,0.04) 3px, rgba(255,255,255,0.04) 6px)',
-              }}
-            />
-
             {/* TOP CRIMPED FOIL FIN (Authentic Heat-Sealed Retail Crimp with Peg Hanger Slot) */}
             <div className={`relative ${sizeStyles.topCrimpH} w-full shrink-0 z-30 flex flex-col justify-between overflow-hidden shadow-md border-b border-black/80`}>
               {/* Metallic Crimped Teeth Serrations */}
@@ -248,124 +214,78 @@ export const BoosterPack: React.FC<BoosterPackProps> = ({
               </div>
 
               {/* Left and Right Notched Tear Markers */}
-              <div className="absolute left-1 top-1/2 -translate-y-1/2 z-20 text-[7px] font-mono text-white/70 font-black tracking-tighter">
+              <div className="absolute left-1.5 top-1/2 -translate-y-1/2 z-20 text-[7px] font-mono text-white/80 font-black tracking-tighter">
                 ◀ TEAR
               </div>
-              <div className="absolute right-1 top-1/2 -translate-y-1/2 z-20 text-[7px] font-mono text-white/70 font-black tracking-tighter">
+              <div className="absolute right-1.5 top-1/2 -translate-y-1/2 z-20 text-[7px] font-mono text-white/80 font-black tracking-tighter">
                 TEAR ▶
               </div>
             </div>
 
-            {/* MAIN PACK BODY */}
-            <div className="relative flex-1 flex flex-col justify-between p-3 overflow-hidden z-15">
-              {/* Radial Elemental Aura Backdrop */}
+            {/* MAIN PACK BODY WITH SET-SPECIFIC BACKGROUND COLOR & MYSTERY DESIGN */}
+            <div
+              className="relative flex-1 flex flex-col justify-between overflow-hidden z-15"
+              style={{
+                background: theme.frontBackground,
+              }}
+            >
+              {/* Soft 3D Cylindrical Pillow Shading */}
               <div
-                className="absolute inset-0 pointer-events-none"
+                className="absolute inset-0 pointer-events-none z-20"
                 style={{
-                  background: theme.glowGradient,
+                  background:
+                    'linear-gradient(90deg, rgba(0,0,0,0.55) 0%, rgba(255,255,255,0.18) 12%, rgba(255,255,255,0.02) 25%, transparent 50%, rgba(255,255,255,0.04) 75%, rgba(0,0,0,0.25) 88%, rgba(0,0,0,0.65) 100%)',
                 }}
               />
 
-              {/* Atmospheric Mystery Fog Nebula */}
-              <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/80 pointer-events-none" />
+              {/* Micro Diagonal Foil Texture Lines */}
+              <div
+                className="absolute inset-0 pointer-events-none z-10 opacity-25"
+                style={{
+                  backgroundImage:
+                    'repeating-linear-gradient(45deg, transparent, transparent 3px, rgba(255,255,255,0.06) 3px, rgba(255,255,255,0.06) 6px)',
+                }}
+              />
 
-              {/* TOP BRANDING BAR: POKEMON TCG HEADER */}
-              <div className={`relative z-20 flex flex-col items-center text-center ${sizeStyles.logoScale}`}>
-                {/* Series Banner */}
-                <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-black/70 border border-white/20 text-[8px] sm:text-[9px] font-mono font-bold tracking-widest text-amber-300 uppercase shadow-sm">
+              {/* Dynamic Prismatic Rainbow Mylar Foil Glare */}
+              <div
+                className="absolute inset-0 pointer-events-none z-25 transition-opacity duration-200"
+                style={{
+                  opacity: glarePos.opacity,
+                  background: `radial-gradient(circle 240px at ${glarePos.x}% ${glarePos.y}%, rgba(255,255,255,0.55) 0%, rgba(255, 230, 0, 0.3) 25%, rgba(0, 240, 255, 0.3) 50%, rgba(255, 0, 180, 0.2) 75%, transparent 100%)`,
+                  mixBlendMode: 'color-dodge',
+                }}
+              />
+
+              {/* Top Series Identifier Badge */}
+              <div className="relative z-30 pt-1.5 px-2.5 flex items-center justify-between">
+                <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full ${theme.badgeBg} ${sizeStyles.badgeText} font-mono font-bold tracking-wider uppercase backdrop-blur-sm shadow-sm`}>
                   <span>◆</span>
                   <span>{theme.seriesName}</span>
-                  <span>◆</span>
-                </div>
-
-                {/* The Classic Pokemon Logo Styling */}
-                <div className="relative mt-1">
-                  <div className="text-xl sm:text-2xl font-black tracking-tighter uppercase font-sans select-none drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] text-transparent bg-clip-text bg-gradient-to-b from-yellow-300 via-amber-400 to-yellow-500 filter drop-shadow-[0_1px_1px_#1e3a8a]">
-                    POKÉMON
-                  </div>
-                  <div className="text-[7px] sm:text-[8px] font-black tracking-[0.25em] text-white/95 uppercase -mt-0.5 drop-shadow">
-                    TRADING CARD GAME
-                  </div>
-                </div>
-
-                {/* Vault Expansion Title */}
-                <div className="mt-1 flex items-center justify-center gap-1">
-                  <span className="h-[1px] w-4 bg-gradient-to-r from-transparent to-amber-400" />
-                  <span className={`font-black uppercase tracking-wider text-white drop-shadow-md ${sizeStyles.titleText}`}>
-                    {theme.expansionTitle}
-                  </span>
-                  <span className="h-[1px] w-4 bg-gradient-to-l from-transparent to-amber-400" />
-                </div>
+                </span>
+                <span className={`${sizeStyles.badgeText} font-mono font-bold text-white/90 bg-black/40 px-1.5 py-0.5 rounded backdrop-blur-xs`}>
+                  1 RAW CARD
+                </span>
               </div>
 
-              {/* CENTRAL MASCOT & MYSTERY AURA DISPLAY */}
-              <div className="relative z-10 my-auto flex flex-col items-center justify-center">
-                {/* Ethereal Mystery Shroud Frame */}
-                <div className="relative flex items-center justify-center">
-                  {/* Pulsating Halo Glow */}
-                  <div className="absolute -inset-4 rounded-full bg-gradient-to-tr from-amber-500/20 via-white/10 to-transparent blur-xl animate-pulse pointer-events-none" />
-
-                  {/* Mascot Card Artwork Window with Mystery Shroud */}
-                  <div
-                    className={`relative ${sizeStyles.mascotH} rounded-xl overflow-hidden shadow-2xl border-2 border-white/40 bg-black/70 flex items-center justify-center transform transition-transform group-hover:scale-105 duration-300`}
-                  >
-                    {/* Official Pokemon Card Scan Image */}
-                    <img
-                      src={mascotImg}
-                      alt={topChaseCard.name}
-                      className="w-full h-full object-contain filter contrast-110 drop-shadow-2xl"
-                      loading="lazy"
-                    />
-
-                    {/* Mystery Nebula Overlay (giving it that authentic mystery pack allure!) */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/30 pointer-events-none" />
-
-                    {/* Prismatic Shimmer Scan Line */}
-                    <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/20 to-transparent pointer-events-none" />
-
-                    {/* Holographic Mystery Emblem Badge */}
-                    <div className="absolute bottom-1 left-1 right-1 px-1.5 py-0.5 rounded bg-black/80 backdrop-blur-sm border border-amber-400/40 text-center">
-                      <div className="text-[8px] sm:text-[9px] font-black font-mono text-amber-300 uppercase tracking-tight truncate">
-                        {theme.mascotTitle}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* 20x Top Chase Callout & Mystery Guarantee */}
-                <div className="mt-2 text-center w-full max-w-[210px]">
-                  <div className="inline-flex items-center justify-center gap-1 px-2.5 py-1 rounded-full bg-gradient-to-r from-amber-500/20 via-yellow-400/10 to-amber-500/20 border border-amber-400/40 text-amber-300 font-mono text-[9px] sm:text-[10px] font-bold shadow-md">
-                    <Sparkles className="w-3 h-3 text-amber-400 shrink-0" />
-                    <span>20X CHASE: £{pack.topChaseValue.toLocaleString()}</span>
-                  </div>
-                  <div className="text-[8px] sm:text-[9px] text-slate-300 font-mono mt-0.5 font-medium">
-                    1 in 100 Odds · 100 Raw Cards Loaded
-                  </div>
-                </div>
+              {/* THE USER'S EXACT MYSTERY PACK DESIGN ARTWORK */}
+              <div className="relative z-15 flex-1 w-full flex items-center justify-center p-2 my-auto">
+                <img
+                  src={theme.artUrl}
+                  alt={`${pack.name} Mystery Pack Design`}
+                  className="w-full h-full object-contain filter drop-shadow-[0_4px_14px_rgba(0,0,0,0.55)] select-none pointer-events-none"
+                  draggable={false}
+                />
               </div>
 
-              {/* BOTTOM PACK DETAILS: GUARANTEED CARD INFO & PACK PRICE */}
-              <div className="relative z-20 pt-2 border-t border-white/10 flex items-center justify-between text-white/90">
-                <div className="flex flex-col">
-                  <span className="text-[7px] sm:text-[8px] font-mono text-slate-400 uppercase tracking-widest">
-                    CONTENTS
-                  </span>
-                  <span className={`font-mono font-bold text-white ${sizeStyles.subText}`}>
-                    1 RAW CARD
-                  </span>
+              {/* Bottom Chase & Floor Callout Footer */}
+              <div className="relative z-30 pb-1.5 pt-1 px-2.5 flex items-center justify-between border-t border-black/20 bg-black/35 backdrop-blur-xs">
+                <div className="flex items-center gap-1 text-[8px] sm:text-[9px] font-mono font-black text-amber-300 drop-shadow">
+                  <Sparkles className="w-2.5 h-2.5 text-amber-400 shrink-0" />
+                  <span>20X: £{pack.topChaseValue}</span>
                 </div>
-
-                <div className="px-2 py-0.5 rounded-md bg-amber-500 text-stone-950 font-black font-mono text-xs sm:text-sm shadow-md">
-                  £{pack.cost}
-                </div>
-
-                <div className="flex flex-col text-right">
-                  <span className="text-[7px] sm:text-[8px] font-mono text-slate-400 uppercase tracking-widest">
-                    FLOOR
-                  </span>
-                  <span className={`font-mono font-bold text-emerald-400 ${sizeStyles.subText}`}>
-                    £{pack.floorValue.toFixed(2)}
-                  </span>
+                <div className="text-[7px] sm:text-[8px] font-mono text-white/90 font-medium">
+                  FLOOR £{pack.floorValue.toFixed(2)}
                 </div>
               </div>
             </div>
@@ -402,11 +322,12 @@ export const BoosterPack: React.FC<BoosterPackProps> = ({
 
           {/* ============================================================== */}
           {/* BACK FACE: AUTHENTIC BOOSTER PACK REVERSE (FIN FOLD & ODDS)    */}
+          {/* WITH UNIQUE SET-SPECIFIC BACK COLOR                            */}
           {/* ============================================================== */}
           <div
-            className={`absolute inset-0 w-full h-full rounded-2xl flex flex-col justify-between overflow-hidden shadow-2xl [backface-visibility:hidden] [transform:rotateY(180deg)] border border-slate-700`}
+            className={`absolute inset-0 w-full h-full rounded-2xl flex flex-col justify-between overflow-hidden shadow-2xl [backface-visibility:hidden] [transform:rotateY(180deg)] border ${theme.accentBorder}`}
             style={{
-              background: `linear-gradient(135deg, #0e111a 0%, #161a26 50%, #0d0f17 100%)`,
+              background: theme.backBackground,
             }}
           >
             {/* Top Crimp on Back */}
@@ -422,55 +343,55 @@ export const BoosterPack: React.FC<BoosterPackProps> = ({
             </div>
 
             {/* Back Body with Authentic Vertical Fin-Fold Seam */}
-            <div className="relative flex-1 p-3.5 flex flex-col justify-between text-left overflow-y-auto custom-scrollbar">
+            <div className="relative flex-1 p-3 flex flex-col justify-between text-left overflow-y-auto custom-scrollbar">
               {/* The Vertical Sealed Foil Fin Flap running down the center */}
               <div className="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-4 bg-gradient-to-r from-black/40 via-white/10 to-black/40 border-x border-white/10 pointer-events-none opacity-40" />
 
               <div>
-                <div className="flex items-center justify-between border-b border-slate-700/80 pb-1.5 mb-2">
-                  <div className="text-xs font-bold text-white tracking-tight">
+                <div className="flex items-center justify-between border-b border-white/20 pb-1.5 mb-2">
+                  <div className="text-xs font-bold text-white tracking-tight drop-shadow">
                     {pack.name} · Official Audit
                   </div>
-                  <span className="text-[9px] font-mono text-amber-400 bg-amber-500/10 px-1.5 py-0.5 rounded border border-amber-500/20">
+                  <span className="text-[9px] font-mono text-amber-300 bg-black/50 px-1.5 py-0.5 rounded border border-amber-400/30">
                     100 Cards
                   </span>
                 </div>
 
-                <p className="text-[9px] text-slate-300 font-mono leading-relaxed mb-2.5">
+                <p className="text-[8px] sm:text-[9px] text-white/90 font-mono leading-relaxed mb-2 drop-shadow-xs">
                   Contains 1 randomly drawn authentic physical Pokémon card from a sealed pool of exactly 100 raw cards vaulted in the UK.
                 </p>
 
                 {/* Drop Odds Breakdown */}
-                <div className="space-y-1 mb-2.5 bg-slate-950/70 p-2 rounded-lg border border-slate-800 text-[9px] font-mono">
-                  <div className="text-[8px] font-bold text-slate-400 uppercase tracking-wider mb-1">
+                <div className="space-y-1 mb-2 bg-black/60 p-2 rounded-lg border border-white/15 text-[8px] sm:text-[9px] font-mono backdrop-blur-xs">
+                  <div className="text-[8px] font-bold text-white/70 uppercase tracking-wider mb-1">
                     Certified Odds Breakdown:
                   </div>
                   <div className="flex justify-between text-amber-300 font-bold">
-                    <span>👑 20x Top Chase ({pack.topChaseCardName.split(' ')[0]})</span>
+                    <span>👑 20x Top Chase ({topChaseCard.name.split(' ')[0]})</span>
                     <span>1.0%</span>
                   </div>
-                  <div className="flex justify-between text-purple-300">
-                    <span>⭐ Ultra Rare Hits (£35 - £70)</span>
+                  <div className="flex justify-between text-purple-200">
+                    <span>⭐ Ultra Rare Hits</span>
                     <span>4.0%</span>
                   </div>
-                  <div className="flex justify-between text-blue-300">
+                  <div className="flex justify-between text-cyan-200">
                     <span>💎 Rare Vault Hits</span>
                     <span>15.0%</span>
                   </div>
-                  <div className="flex justify-between text-emerald-300">
+                  <div className="flex justify-between text-emerald-200">
                     <span>⚡ Mid Tier Value Cards</span>
                     <span>30.0%</span>
                   </div>
-                  <div className="flex justify-between text-slate-400">
+                  <div className="flex justify-between text-slate-300">
                     <span>📦 Standard Floor (NM/M)</span>
                     <span>50.0%</span>
                   </div>
                 </div>
 
                 {/* Instant Liquidity & Delivery Guarantee */}
-                <div className="text-[8px] text-slate-400 font-mono space-y-1 border-t border-slate-800 pt-2">
-                  <div className="flex items-center gap-1 text-emerald-400 font-bold">
-                    <ShieldCheck className="w-3 h-3" />
+                <div className="text-[8px] text-white/80 font-mono space-y-0.5 border-t border-white/15 pt-1.5">
+                  <div className="flex items-center gap-1 text-emerald-300 font-bold">
+                    <ShieldCheck className="w-3 h-3 shrink-0" />
                     <span>Instant 90% Buyback or Physical Shipping</span>
                   </div>
                   <div>• UK Tracked: £3.99 (Free over £25)</div>
@@ -479,14 +400,14 @@ export const BoosterPack: React.FC<BoosterPackProps> = ({
               </div>
 
               {/* Bottom Authentic EAN Barcode on Pack Reverse */}
-              <div className="pt-2 border-t border-slate-800 flex items-center justify-between">
+              <div className="pt-1.5 border-t border-white/15 flex items-center justify-between">
                 <div className="flex flex-col">
-                  <span className="text-[8px] font-mono text-slate-400">BATCH NO.</span>
-                  <span className="text-[9px] font-mono font-bold text-white">#UK-VAULT-2024</span>
+                  <span className="text-[7px] font-mono text-white/70">BATCH NO.</span>
+                  <span className="text-[8px] font-mono font-bold text-white">#UK-VAULT-2024</span>
                 </div>
 
                 <div className="flex flex-col items-end">
-                  <div className="flex items-center gap-[1.5px] bg-white px-1.5 py-1 rounded h-5">
+                  <div className="flex items-center gap-[1.5px] bg-white px-1.5 py-0.5 rounded h-4">
                     {Array.from({ length: 18 }).map((_, i) => (
                       <div
                         key={i}
@@ -495,7 +416,7 @@ export const BoosterPack: React.FC<BoosterPackProps> = ({
                       />
                     ))}
                   </div>
-                  <span className="text-[7px] font-mono text-slate-400 mt-0.5">5 012345 678901</span>
+                  <span className="text-[6px] font-mono text-white/80 mt-0.5">5 012345 678901</span>
                 </div>
               </div>
             </div>
@@ -550,3 +471,4 @@ export const BoosterPack: React.FC<BoosterPackProps> = ({
     </div>
   );
 };
+

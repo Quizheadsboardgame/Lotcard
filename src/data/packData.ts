@@ -755,9 +755,9 @@ export const PACK_TIERS: PackTier[] = [
     floorValue: 3.5,
     averageValue: 5.25,
     totalCards: 100,
-    accentColor: 'from-amber-500/20 via-orange-500/10 to-transparent',
-    badgeColor: 'border-amber-500/30 text-amber-400',
-    foilGradient: 'from-amber-600 via-amber-700 to-stone-900',
+    accentColor: 'from-red-500/20 via-orange-500/10 to-transparent',
+    badgeColor: 'border-red-500/30 text-red-400',
+    foilGradient: 'from-red-600 via-orange-600 to-amber-900',
     cards: buildPack5Cards(),
   },
   {

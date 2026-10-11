@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { PackTier, PokemonCard } from '../types';
 import { CardSlab } from './CardSlab';
-import { BoosterPack } from './BoosterPack';
+import { BoosterPack, getPackTheme } from './BoosterPack';
 import { GrailRevealEffect } from './GrailRevealEffect';
 import { sound } from '../utils/audio';
 import { Sparkles, ShieldCheck, RefreshCw, DollarSign, Package, X, Flame, Eye, Globe, ExternalLink, Crown } from 'lucide-react';
@@ -253,60 +253,80 @@ export const UnboxModal: React.FC<UnboxModalProps> = ({
             </div>
 
             {/* The Pack Tear Assembly: Realistic pack separating + Card sliding out */}
-            <div className="relative w-[280px] h-[520px] flex items-center justify-center">
-              {/* 1. FLYING DETACHED TOP CRIMP FOIL (Rips across top and peels backward) */}
-              <div className="absolute top-0 left-0 right-0 z-30 animate-foil-top-fly pointer-events-none">
-                <div className="h-14 w-full rounded-t-2xl overflow-hidden shadow-2xl border-t-2 border-amber-400/80 bg-gradient-to-b from-[#242b3d] via-[#1a1f2c] to-black flex flex-col justify-between p-2">
-                  <div className="flex items-center justify-between text-[8px] font-mono text-amber-300 font-bold">
-                    <span>⚡ TEAR LINE RIPPED</span>
-                    <span>VAULT #UK</span>
-                  </div>
-                  {/* Jagged foil rip tear line */}
-                  <div
-                    className="h-2 w-full"
-                    style={{
-                      background:
-                        'repeating-linear-gradient(45deg, #f59e0b 0px, #f59e0b 4px, transparent 4px, transparent 8px)',
-                    }}
-                  />
-                </div>
-              </div>
-
-              {/* 2. EMITTING RADIANT ENERGY BURST FROM PACK OPENING */}
-              <div className="absolute top-10 left-1/2 -translate-x-1/2 w-56 h-12 bg-amber-400 blur-xl opacity-80 z-20 pointer-events-none animate-pulse" />
-
-              {/* 3. THE CARD EMERGING DIRECTLY FROM INSIDE THE PACK */}
-              <div className="absolute top-8 z-25 animate-card-emerge">
-                <CardSlab card={currentCard} size="md" interactive={false} />
-              </div>
-
-              {/* 4. LOWER PACK FOIL SLEEVE (Sinks downward as card is pulled out) */}
-              <div className="absolute bottom-0 left-0 right-0 h-[440px] z-10 animate-pack-bottom-drop pointer-events-none">
-                <div className="relative w-full h-full rounded-b-2xl overflow-hidden border border-slate-700/80 shadow-2xl bg-gradient-to-b from-black via-[#0d1017] to-black flex flex-col justify-end">
-                  {/* Jagged open foil rim */}
-                  <div className="absolute top-0 left-0 right-0 h-4 bg-gradient-to-r from-amber-500/40 via-yellow-300/60 to-amber-500/40 border-b border-amber-400/50 shadow-lg" />
-
-                  {/* Pack artwork lower portion visible */}
-                  <div className="p-4 text-center">
-                    <div className="text-[10px] font-mono text-slate-400 uppercase tracking-widest">
-                      {pack.name}
-                    </div>
-                    <div className="text-xs font-mono font-bold text-amber-400 mt-0.5">
-                      1 RAW POKÉMON CARD UNVAULTED
+            {(() => {
+              const packTheme = getPackTheme(pack.id);
+              return (
+                <div className="relative w-[280px] h-[520px] flex items-center justify-center">
+                  {/* 1. FLYING DETACHED TOP CRIMP FOIL (Rips across top and peels backward) */}
+                  <div className="absolute top-0 left-0 right-0 z-30 animate-foil-top-fly pointer-events-none">
+                    <div
+                      className="h-14 w-full rounded-t-2xl overflow-hidden shadow-2xl border-t-2 border-amber-300/80 flex flex-col justify-between p-2"
+                      style={{ background: packTheme.frontBackground }}
+                    >
+                      <div className="flex items-center justify-between text-[8px] font-mono text-white font-black drop-shadow">
+                        <span>⚡ TEAR LINE RIPPED</span>
+                        <span>{packTheme.seriesName}</span>
+                      </div>
+                      {/* Jagged foil rip tear line */}
+                      <div
+                        className="h-2 w-full"
+                        style={{
+                          background:
+                            'repeating-linear-gradient(45deg, #f59e0b 0px, #f59e0b 4px, transparent 4px, transparent 8px)',
+                        }}
+                      />
                     </div>
                   </div>
 
-                  {/* Bottom heat-crimp teeth */}
-                  <div
-                    className="h-7 w-full border-t border-black/80"
-                    style={{
-                      background:
-                        'repeating-linear-gradient(90deg, #1f242e 0px, #4b5563 2px, #d1d5db 4px, #9ca3af 6px, #11141b 8px)',
-                    }}
-                  />
+                  {/* 2. EMITTING RADIANT ENERGY BURST FROM PACK OPENING */}
+                  <div className="absolute top-10 left-1/2 -translate-x-1/2 w-56 h-12 bg-amber-400 blur-xl opacity-80 z-20 pointer-events-none animate-pulse" />
+
+                  {/* 3. THE CARD EMERGING DIRECTLY FROM INSIDE THE PACK */}
+                  <div className="absolute top-8 z-25 animate-card-emerge">
+                    <CardSlab card={currentCard} size="md" interactive={false} />
+                  </div>
+
+                  {/* 4. LOWER PACK FOIL SLEEVE (Sinks downward as card is pulled out) */}
+                  <div className="absolute bottom-0 left-0 right-0 h-[440px] z-10 animate-pack-bottom-drop pointer-events-none">
+                    <div
+                      className={`relative w-full h-full rounded-b-2xl overflow-hidden border ${packTheme.accentBorder} shadow-2xl flex flex-col justify-between`}
+                      style={{ background: packTheme.frontBackground }}
+                    >
+                      {/* Jagged open foil rim */}
+                      <div className="h-4 bg-gradient-to-r from-amber-500/40 via-yellow-300/60 to-amber-500/40 border-b border-amber-400/50 shadow-lg" />
+
+                      {/* Mystery pack artwork lower portion visible */}
+                      <div className="relative flex-1 flex items-end justify-center pb-2 px-4 overflow-hidden">
+                        <img
+                          src={packTheme.artUrl}
+                          alt="Mystery Pack Artwork"
+                          className="w-[200px] max-h-[220px] object-contain opacity-90 drop-shadow-md select-none pointer-events-none"
+                        />
+                      </div>
+
+                      {/* Pack name and unvault callout */}
+                      <div className="p-3 text-center bg-black/40 backdrop-blur-xs border-t border-black/20">
+                        <div className="text-[10px] font-mono text-white font-black tracking-widest drop-shadow uppercase">
+                          {pack.name} · MYSTERY PACK
+                        </div>
+                        <div className="text-xs font-mono font-bold text-amber-300 mt-0.5">
+                          1 RAW POKÉMON CARD UNVAULTED
+                        </div>
+                      </div>
+
+                      {/* Bottom heat-crimp teeth */}
+                      <div
+                        className="h-7 w-full border-t border-black/80"
+                        style={{
+                          background:
+                            'repeating-linear-gradient(90deg, #1f242e 0px, #4b5563 2px, #d1d5db 4px, #9ca3af 6px, #11141b 8px)',
+                        }}
+                      />
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
+              );
+            })()}
           </div>
         )}
 
